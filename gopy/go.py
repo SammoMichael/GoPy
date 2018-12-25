@@ -1,6 +1,8 @@
 import sys
 import pdb 
 import numpy as np
+import random
+from threading import timer
 
 def prRed(prt): print("\033[91m {}\033[00m" .format(prt))
 def prGreen(prt): print("\033[92m {}\033[00m" .format(prt))
@@ -18,17 +20,6 @@ players = ['player1', 'player2']
 turns = [0, 1]
 current_turn = 1
 
-def on_edge(x, y):
-    if x == 0 and (y != 0 or y != board_size - 1):
-        return 'w'
-    elif x == board_size - 1 and (y != board_size - 1 or y != 0):
-        return 'e'
-    elif y == 0 and (x != 0 or x != board_size - 1):
-        return 'n'
-    elif y == board_size - 1 and (x != board_size - 1 or x != 0):
-        return 's'
-    return False
-
 def on_corner(x, y):
     if (x == 0 and y == 0):
         return 'nw' 
@@ -38,6 +29,14 @@ def on_corner(x, y):
         return 'ne'
     elif (y == board_size - 1 and x == 0):
         return 'sw'
+    elif x == 0 and (y != 0 or y != board_size - 1):
+        return 'w'
+    elif y == 0 and (x != 0 or x != board_size - 1):
+        return 'n'
+    elif x == board_size - 1 and (y != board_size - 1 or y != 0):
+        return 'e'
+    elif y == board_size - 1 and (x != board_size - 1 or x != 0):
+        return 's'
     return False
 
 def on_board(x, y):
@@ -47,18 +46,90 @@ def on_board(x, y):
 
 def check_liberties(x, y):
     global game
-    # if on_edge(x, y):
-    #     print(on_edge(x, y))
-    # if on_corner(x, y):
-    #     print(on_corner(x, y))
-    # if game[x+1][y] == 2 and game[x][y+1] and game[x][y-1] == 2 and game[x-1][y] == 2:
-    # game[x][y] = 0
-    if game[x][y] == 1:
+    # print(on_corner(x,y))
+    if on_corner(x, y) == 's' and game[x][y] == 2:
+        if game[x][y-1] == 1 and game[x+1][y-1] == 1 and game[x-1][y-1] == 1:
+            game[x][y] == 0
+            return game[x][y]
+    elif on_corner(x, y) == 's' and game[x][y] == 1:
+        if game[x][y-1] == 2 and game[x+1][y-1] == 2 and game[x-1][y-1] == 2:
+            game[x][y] == 0
+            return game[x][y]
+    elif on_corner(x, y) == 'n' and game[x][y] == 2:
+        if game[x][y-1] == 1 and game[x+1][y-1] == 1 and game[x-1][y-1] == 1:
+            game[x][y] == 0
+            return game[x][y]
+    elif on_corner(x, y) == 'n' and game[x][y] == 1:
+        if game[x][y+1] == 2 and game[x+1][y+1] == 2 and game[x-1][y-1] == 2:
+            game[x][y] == 0
+            return game[x][y]
+    elif on_corner(x, y) == 'e' and game[x][y] == 2:
+        if game[x-1][y] == 1 and game[x][y-1] == 1 and game[x][y+1] == 1:
+            game[x][y] == 0
+            return game[x][y]
+    elif on_corner(x, y) == 'e' and game[x][y] == 1:
+        if game[x-1][y] == 2 and game[x][y-1] == 2 and game[x][y+1] == 2:
+            game[x][y] == 0
+            return game[x][y]
+    elif on_corner(x, y) == 'w' and game[x][y] == 2:
+        if game[x+1][y-1] == 1 and game[x][y-1] == 1 and game[x][y+1] == 1:
+            game[x][y] == 0
+            return game[x][y]
+    elif on_corner(x, y) == 'w' and game[x][y] == 1:
+        if game[x+1][y-1] == 2 and game[x][y-1] == 2 and game[x][y+1] == 2:
+            game[x][y] == 0
+            return game[x][y]
+
+    elif on_corner(x, y) == 'ne' and game[x][y] == 2:
+        if game[x-1][y] == 1 and game[x][y+1] == 1:
+            game[x][y] == 0
+            return game[x][y]
+    elif on_corner(x, y) == 'ne' and game[x][y] == 1:
+        if game[x-1][y] == 2 and game[x][y+1] == 2:
+            game[x][y] == 0
+            return game[x][y]
+    elif on_corner(x, y) == 'nw' and game[x][y] == 2:
+        if game[x+1][y] == 1 and game[x][y+1] == 1:
+            game[x][y] == 0
+            return game[x][y]
+    elif on_corner(x, y) == 'nw' and game[x][y] == 1:
+        if game[x-1][y] == 2 and game[x][y+1] == 2:
+            game[x][y] == 0
+            return game[x][y]
+    elif on_corner(x, y) == 'se' and game[x][y] == 2:
+        if game[x-1][y] == 1 and game[x][y+1] == 1:
+            game[x][y] == 0
+            return game[x][y]
+    elif on_corner(x, y) == 'se' and game[x][y] == 2:
+        if game[x-1][y] == 1 and game[x][y+1] == 1:
+            game[x][y] == 0
+            return game[x][y]
+    elif on_corner(x, y) == 'ne' and game[x][y] == 2:
+        if game[x-1][y] == 1 and game[x][y+1] == 1:
+            game[x][y] == 0
+            return game[x][y]
+    elif on_corner(x, y) == 'ne' and game[x][y] == 2:
+        if game[x-1][y] == 1 and game[x][y+1] == 1:
+            game[x][y] == 0
+            return game[x][y]
+    elif on_corner(x, y) == False and game[x][y] == 1:
         if game[x+1][y] == 2 and game[x][y+1] and game[x][y-1] == 2 and game[x-1][y] == 2:
             game[x][y] = 0
-    if game[x][y] == 2:
-        if game[x+1][y] == 2 and game[x][y+1] and game[x][y-1] == 2 and game[x-1][y] == 1:
+            return game[x][y]
+    elif on_corner(x, y) == False and game[x][y] == 2:
+        if game[x+1][y] == 1 and game[x][y+1] and game[x][y-1] == 1 and game[x-1][y] == 1:
             game[x][y] = 0
+            return game[x][y]
+
+
+    # elif on_corner(x, y) == False and game[x][y] == 1 and y and y < board_size - 1:
+    #     if game[x+1][y] == 2 and game[x][y+1] == 2 and game[x][y-1] == 2 and game[x-1][y] == 2:
+    #         game[x][y] = 0
+    #         return game[x][y]
+    # elif game[x][y] == 2:
+    #     if game[x+1][y] == 2 and game[x][y+1] == 1 and game[x][y-1] == 2 and game[x-1][y] == 1:
+    #         game[x][y] = 0 
+    #         return game[x][y]
     
 
 def occupied_space(x, y):
@@ -76,9 +147,9 @@ def current_player_color():
 
 def current_player():
     global current_turn 
-    current_turn += 1
-    print(players[(current_turn) % 2])
-    return players[(current_turn) % 2]
+    current_turn = (current_turn + 1 ) % 2
+    # print(players[(current_turn) % 2])
+    return players[current_turn]
 
 white_groups = []
 black_groups = []
@@ -137,26 +208,41 @@ black_groups = []
 #                 print('adjacent')
 
 #                 # black_groups.append([x, y], [x, y+1])
+
          
 
 def update_board(board_map = board_map, player = 0, row = 0, col = 0):
     try: 
+        header_cols = []
         if board_map is not None:
-            # print(chr(27) + "[2J")
-            prGreen('   0  1  2  3  4  5  6  7  8')
+            print(chr(27) + "[2J")
+            for x in range(board_size):
+                header_cols.append(x)
+            #     print(" " + str(x) + " ", end = "")
+            # print('\n')
+            prGreen(header_cols)
             board_map[row][col] = player
             for count, row in enumerate(board_map):
                 for count2, stone in enumerate(row): 
                     # pdb.set_trace()
-                    check_liberties(count, count2)
+                    check_liberties(count2, count)
                     # check_adjacency(count2, count)
+                if count > 0:
+                    prGreen(count)
                 prPurple(row)
-                prGreen(count)
                 # print(board_map)
                 # pdb.set_trace()
             return board_map
     except IndexError as e: print(e)
     except: print('sorry, something went awry')
+
+def get_random_move():
+    move_x = random.randint(0, board_size - 1)
+    move_y = random.randint(0, board_size - 1)
+    # if occupied_space(move_x, move_y) == False:
+    print(move_x, move_y)
+    return (move_x, move_y)
+        # get_random_move() 
 
 def get_move():
     try:
@@ -179,9 +265,16 @@ def game_loop(board_map):
         if board_map is not None:
             game_over = False
             while (game_over != True):
+                if current_turn == 1:
+                    new_move = get_random_move()
+                    game = update_board(
+                        board_map, current_player_mark(), new_move[0], new_move[1])
+                    print(current_turn)
+
                 new_move = get_move()
                 if new_move is not None:
                     game = update_board(board_map, current_player_mark(), new_move[0], new_move[1])
+                    print('your turn')
             return game
     except TypeError as e: print(e)
     game = update_board(board_map, current_player_mark(),new_move[0], new_move[1])
