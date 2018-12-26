@@ -1,7 +1,11 @@
+
 import sys
 import pdb 
 import numpy as np
 import random
+
+
+    # rest of code
 def prRed(prt): print("\033[91m {}\033[00m" .format(prt))
 def prGreen(prt): print("\033[92m {}\033[00m" .format(prt))
 def prYellow(prt): print("\033[93m {}\033[00m" .format(prt))
@@ -19,6 +23,11 @@ turns = [0, 1]
 current_turn = 1
 white_captured = 0
 black_captured = 0
+
+
+@Gooey
+def main():
+    parser = ArgumentParser(...)
 
 def on_corner(x, y):
     if (x == 0 and y == 0):
@@ -269,16 +278,19 @@ def get_move():
         move = input("move: ")
         if move == "p":
             return move
+        if move == "r":
+            return get_random_move()
         move_x = (int(move[0]))
         move_y = (int(move[1]))
         if occupied_space(move_x, move_y) == True:
             raise Exception
         if on_board(move_x, move_y) == False:
             raise Exception
-        pdb.set_trace()
+        # pdb.set_trace()
         return [move_x, move_y]
     except Exception as e: print("invalid move", e)
     # get_move()
+
 
 def game_loop(board_map):
     try:
