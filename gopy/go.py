@@ -25,9 +25,7 @@ white_captured = 0
 black_captured = 0
 
 
-@Gooey
-def main():
-    parser = ArgumentParser(...)
+
 
 def on_corner(x, y):
     if (x == 0 and y == 0):
