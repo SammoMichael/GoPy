@@ -1,9 +1,12 @@
-
+import time 
 import sys
 import pdb 
 import numpy as np
 import random
 import unicoderender as uc
+import datetime
+import threading
+# import cursor
 
 def prRed(prt): print("\033[91m {}\033[00m" .format(prt))
 def prGreen(prt): print("\033[92m {}\033[00m" .format(prt))
@@ -14,6 +17,8 @@ def prCyan(prt): print("\033[96m {}\033[00m" .format(prt))
 def prLightGray(prt): print("\033[97m {}\033[00m" .format(prt))
 def prBlack(prt): print("\033[98m {}\033[00m" .format(prt))
 # board_size = int(input("board size?")
+game_start_time = datetime.datetime.now()
+game_time = datetime.datetime.now() - game_start_time
 white_played_stones = []
 black_played_stones = []
 game_over = False
@@ -261,7 +266,7 @@ def check_groups():
                 black_groups.append(pos2)   
     group_groups()
     add_to_groups()
-    
+    combine_groups()
 
 def add_to_groups():
     # pdb.set_trace()
@@ -281,6 +286,22 @@ def add_to_groups():
                       # white_real_groups[count2].append(pos2)
                     #     continue
     print(white_real_groups)
+
+
+def combine_groups():
+
+    for count, pos in enumerate(white_groups):
+      trues = 0
+      for count2, groups in enumerate(white_real_groups):
+        if (pos in groups):
+          trues += 1
+          print(trues)
+        if trues == len(white_real_groups):
+          print('yaay' + str(pos))
+          print(trues)
+
+    print(white_real_groups)
+    print(len(white_real_groups))
 
 
 def count_liberty():
@@ -330,6 +351,11 @@ def flatten(x, y):
 
 def update_board(board_map = board_map, player = 0, col = -1, row = -1):
     try: 
+        global game_time
+        print("\u001b[96mHelloWorld")
+        print("\u001b[40m {% game %}")
+        # print(chr(27) + "[2J")
+
         if board_map is not None:
             global turn_count
             global game
@@ -352,6 +378,8 @@ def update_board(board_map = board_map, player = 0, col = -1, row = -1):
                 # uc.start_position = player
             # for count, row in enumerate(uc.game(uc.start_position)):
                 # map = (uc.game(uc.start_position))
+                print(chr(27) + "[2J")
+
                 if current_turn % 2 == 1:
                     newmap = game[:(idx)] + game[idx].replace(game[idx], uc.black_stone, 1) + game[(idx + 1):]
                     game = newmap
@@ -361,6 +389,9 @@ def update_board(board_map = board_map, player = 0, col = -1, row = -1):
                 print(newmap)
                 print(white_captured)
                 print(black_captured)
+                now = datetime.datetime.now()
+                print(now.second - game_start_time.second)
+         
                 # pdb.set_trace()
                 # for count2, stone in enumerate(row): 
                     # print(count2, count)
@@ -382,6 +413,8 @@ def update_board(board_map = board_map, player = 0, col = -1, row = -1):
                     print("" + str(x) + "   ", end="")
                 print('')
                     # prGreen(header_cols)
+                # print(chr(27) + "[2J")
+
                 print(game)
                 # print(white_captured)
                 # print(black_captured)
@@ -399,6 +432,7 @@ def update_board(board_map = board_map, player = 0, col = -1, row = -1):
                 # prPurple(row)
                 # print(board_map)
                 # pdb.set_trace()
+            
             game = newmap
             board_map = newmap
             turn_count += 1
@@ -407,6 +441,7 @@ def update_board(board_map = board_map, player = 0, col = -1, row = -1):
     except: print('sorry, something went awry')
 
 def get_random_move():
+    time.sleep(3)
     got_move = False
     while got_move == False:
         move_x = random.randint(1, last_index - 1)
@@ -417,6 +452,16 @@ def get_random_move():
     
 def get_move():
     try:
+        # move = ""
+        # while move == "":
+            
+        # change = datetime.datetime.now() - game_start_time
+        # print('\033[1;1H' + time.asctime(time.localtime())
+                # )
+            #   (str(change)[5:7])
+        # print(now.strftime("%H:%M:%S"), end="\r")
+        # sys.stdout.flush()
+        # time.sleep(.4)
         # update_board()
         # prRed(black_captured)
         # prCyan(white_captured)
@@ -433,6 +478,8 @@ def get_move():
         if on_board(move_x, move_y) == False:
             raise Exception
         # pdb.set_trace()
+        print('\033[1;1H' + time.asctime(time.localtime())
+                )
         return (move_x, move_y)
     except Exception as e: print("invalid move", e)
     get_move()
