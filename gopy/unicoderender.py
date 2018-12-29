@@ -7,10 +7,10 @@ topline = ul + (h3 + nt) * 7 + h3 + ur
 midline = wt + (h3 + plus) * 7 + h3 + et
 botline = ll + (h3 + st) * 7 + h3 + lr
 pieces = '        '  # + pieces[:6][::-1] + pieces[6:]
-white_stone = '●'
+white_stone = '○'
 allbox = ''.join(chr(9472 + x) for x in range(200))
 box = [allbox[i] for i in (2, 0, 12, 16, 20, 24, 44, 52, 28, 36, 60)]
-black_stone = '○'
+black_stone =  '●'
 (vbar, hbar, ul, ur, ll, lr, nt, st, wt, et, plus) = box
 h3 = hbar * 3
 # useful constant unicode strings to draw the square borders
@@ -69,7 +69,7 @@ grid = [[0, 4, 8, 12, 16, 20, 24, 28, 32],
 #         newbotline += (white_stone)
 #     if x != '┴' and x != "┘" and x != "└":
 #         newbotline += ('─')
-
+#   
 # newtopline = ''
 # for count, x in enumerate(topline):
 #     if x == '┬' and count not in coordinates:

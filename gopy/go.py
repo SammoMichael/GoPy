@@ -13,7 +13,9 @@ def prPurple(prt): print("\033[95m {}\033[00m" .format(prt))
 def prCyan(prt): print("\033[96m {}\033[00m" .format(prt))
 def prLightGray(prt): print("\033[97m {}\033[00m" .format(prt))
 def prBlack(prt): print("\033[98m {}\033[00m" .format(prt))
-# board_size = int(input("board size?"))
+# board_size = int(input("board size?")
+white_played_stones = []
+black_played_stones = []
 game_over = False
 board_size = 9
 board_map = np.zeros( (board_size, board_size) )
@@ -233,61 +235,87 @@ def current_player():
 
 white_groups = []
 black_groups = []
+white_real_groups = []
+grouped_groups = []
 
-# def check_adjacency(x,y):
-#     if [x, y] in white_groups or [x, y] in black_groups:
-#         return 
-#     # print(black_groups)
-#     # print(white_groups)
-#     if game[x][y] == 2:
-#             # white_groups.append()
-#             if game[x+1][y] == 2:
-#                 if [x+1][y] not in white_groups:
-#                     white_groups.append([x+1, y])
-#                 elif [x][y] not in white_groups:
-#                     white_groups.append([x, y])
-#                 # check_adjacency(x+1, y)
-#                     # black_groups.append([x, y], [x+1, y])
-#             elif game[x-1][y] == 2:
-#                 if [x-1][y] not in white_groups:
-#                     white_groups.append([x-1, y])
-#                 elif [x][y] not in white_groups:
-#                     white_groups.append([x, y])
+def check_adjacency(pos, pos2):
+    # pdb.set_trace()
+    if abs(pos[0] - pos2[0]) <= 1 ^ abs(pos[1] - pos2[1]) <= 1 and pos2[0] != pos2[1]:
+        
+        return True 
+    return False
 
-#                 # black_groups.append([x, y], [x-1, y])
+def check_groups():
+    # pdb.set_trace()
+    for count, pos in enumerate(white_played_stones):
+        for count2, pos2 in enumerate(white_played_stones):
+            if check_adjacency(pos, pos2) == True and pos not in white_groups and pos != pos2:
+                white_groups.append(pos)
+            elif check_adjacency(pos, pos2) == True and pos2 not in white_groups and pos != pos2:
+                white_groups.append(pos2)     
+    for count, pos in enumerate(black_played_stones):
+        for count2, pos2 in enumerate(black_played_stones):
+            if check_adjacency(pos, pos2) == True and pos not in black_groups and pos != pos2:
+                black_groups.append(pos)     
+            elif check_adjacency(pos, pos2) == True and pos2 not in black_groups and pos != pos2:
+                black_groups.append(pos2)   
+    group_groups()
+    add_to_groups()
+    
 
-#             elif game[x][y-1] == 2:
-#                 if [x][y-1] not in white_groups:
-#                     white_groups.append([x, y-1])
-#                 elif [x][y] not in white_groups:
-#                     white_groups.append([x, y])
+def add_to_groups():
+    # pdb.set_trace()
+    for count, pos in enumerate(white_groups):
+        for count2, groups in enumerate(white_real_groups):
+            # print(groups)
+            if pos not in groups:
+                for pos2 in groups:
+                    print(pos)
+                    if check_adjacency(pos, pos2) == True:
 
-#                 # black_groups.append([x, y], [x, y-1])
+                      print(True)
+                      # print(pos)
+                      # print(pos2)
+                      print(white_real_groups[count2].append(pos))
+                      break
+                      # white_real_groups[count2].append(pos2)
+                    #     continue
+    print(white_real_groups)
 
-#             elif game[x][y+1] == 2:
-#                 if [x][y+1] not in white_groups:
-#                     white_groups.append([x, y+1])
 
-#                 # black_groups.append([x, y], [x, y+1])
-#     if game[x][y] == 1:
-#             if game[x+1][y] == 1:
-#                 print('adjacent')
+def count_liberty():
+    pass
 
-#                 # black_groups.append([x, y], [x+1, y])
-#             elif game[x-1][y] == 1:
-#                 print('adjacent')
 
-#                 # black_groups.append([x, y], [x-1, y])
 
-#             elif game[x][y-1] == 1:
-#                 print('adjacent')
+# def group_liberties():
+#     for count, pos in enumerate(white_groups):
+#             for count2, pos2 in enumerate(white_groups):
+#                 if pos != pos2 and check_adjacency(pos, pos2) == True:
+#                     white_real_groups.concat([pos, pos2])
 
-#                 # black_groups.append([x, y], [x, y-1])
 
-#             elif game[x][y+1] == 1:
-#                 print('adjacent')
+def group_groups():
+    global grouped_groups
+    global white_real_groups
+    # pdb.set_trace()
+    global white_real_groups
+    white_real_groups.clear()
+    for count, pos in enumerate(white_groups[:-1]):
+        if pos not in grouped_groups:
+            if check_adjacency(white_groups[count], white_groups[count + 1] ) == True and [white_groups[count]] not in white_real_groups:
+                if len(grouped_groups) == 0:
+                    white_real_groups = [white_groups[count], white_groups[count+1]]
+                    continue
+                elif len(grouped_groups) > 0:
+                    white_real_groups += [[white_groups[count], white_groups[count+1]]]
+                    continue
+            # white_real_groups += white_groups[count]
+    if white_real_groups not in grouped_groups and white_real_groups != []: 
+        if len(white_real_groups) != 0:
+            # grouped_groups += [white_real_groups]
+            grouped_groups.append(white_real_groups)
 
-#                 # black_groups.append([x, y], [x, y+1])
 
 def unflatten(pos):
     y = int(pos / 68)
@@ -336,6 +364,7 @@ def update_board(board_map = board_map, player = 0, col = -1, row = -1):
                 # pdb.set_trace()
                 # for count2, stone in enumerate(row): 
                     # print(count2, count)
+                check_groups()
                 for row in uc.grid: 
                     # print(count)
                     for count in row:
@@ -354,8 +383,15 @@ def update_board(board_map = board_map, player = 0, col = -1, row = -1):
                 print('')
                     # prGreen(header_cols)
                 print(game)
-                print(white_captured)
-                print(black_captured)
+                # print(white_captured)
+                # print(black_captured)
+                # print(black_played_stones)
+                # print("black groups:" + str(black_groups))
+                print("white groups:" + str(white_groups))
+                print("white real groups:" + str(white_real_groups))
+                # print("grouped_groups:" + str(grouped_groups))
+                # print(white_played_stones)
+
                     # check_adjacency(count2, count)
                 # if count > 0:
                 #     prGreen(count)
@@ -397,21 +433,24 @@ def get_move():
         if on_board(move_x, move_y) == False:
             raise Exception
         # pdb.set_trace()
-        return [move_x, move_y]
+        return (move_x, move_y)
     except Exception as e: print("invalid move", e)
     get_move()
 
 
 def game_loop(board_map):
     try:
+        global played_stones
         global game_over
         if board_map is not None:
             update_board()
             game_over = False
             while (game_over != True):
-                if current_turn == 1:
-                    # new_move = get_random_move()
-                    new_move = get_move()
+                if current_turn % 2 == 0:
+                    new_move = get_random_move()
+                    # new_move = get_move()
+                    white_played_stones.append(new_move)
+
                     game = update_board(
                         board_map, current_player_mark(), new_move[0], new_move[1])
                     # print(current_turn)
@@ -420,11 +459,18 @@ def game_loop(board_map):
                 # prRed(black_captured)
                 # prCyan(white_captured)
                 new_move = get_move()
+                if new_move == 'r':
+                    new_move = get_random_move()
+                    # new_move = get_move()
+                    black_played_stones.append(new_move)
+                    game = update_board(
+                    board_map, current_player_mark(), new_move[0], new_move[1])
                 if new_move == 'p':
                     game = update_board()
                     current_player()
-                    game_loop(game)
-                if new_move is not None:
+                    # game_loop(game)
+                if new_move is not None and new_move != 'p': 
+                    black_played_stones.append(new_move)
                     game = update_board(board_map, current_player_mark(), new_move[0], new_move[1])
             return game
     except TypeError as e: print(e)
