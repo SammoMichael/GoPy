@@ -5,7 +5,7 @@ In order to provide more options I am working on 3 versions of Go:
 * A simple board display in Unicode, will be available in standard 9x9, 13x13, or 19x19
 * Finally, a GUI using Pygame
 
-![Screenshot](https://github.com/SammoMichael/GoPy/blob/master/unicode.png)
+![Screenshot](https://github.com/SammoMichael/GoPy/blob/master/unicode2.png)
 
 ## Technologies
 Python
