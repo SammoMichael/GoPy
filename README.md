@@ -1,6 +1,11 @@
-# GoPy is the game of go in Python
+GoPy is the game of go in Python
 
-![Screenshot](https://github.com/SammoMichael/GoPy/blob/master/goscreen.png)
+In order to provide more options I am working on 3 versions of Go:
+* Without Unicode characters, the most basic but most versatile, you can choose a board almost any size
+* A simple board display in Unicode, will be available in standard 9x9, 13x13, or 19x19
+* Finally, a GUI using Pygame
+
+![Screenshot](https://github.com/SammoMichael/GoPy/blob/master/unicode.png)
 
 ## Technologies
 Python
