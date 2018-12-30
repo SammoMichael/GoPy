@@ -9,7 +9,8 @@ In order to provide more options I am working on 3 versions of Go:
 
 ## Technologies
 Python
-
+AI will be using Machine Learning with Monte Carlo Tree Search and Value System
+For now it is based on a simple pseudo-random move generator
 ```python
 def game_loop(board_map):
     try:
