@@ -34,4 +34,4 @@ game_loop(game)
 ```
 
 ### Instructions
-clone and run in terminal
+clone and run 'python go.py' from game directory in console
